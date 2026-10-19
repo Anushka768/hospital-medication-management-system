@@ -40,5 +40,5 @@ documented in this repository.
 
 - Anushka Chauhan
 - Team Member 2
-- Team Member 3
+- Owen Segato
 - Team Member 4
