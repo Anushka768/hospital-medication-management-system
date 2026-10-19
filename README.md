@@ -39,6 +39,6 @@ documented in this repository.
 ## Team
 
 - Anushka Chauhan
-- Team Member 2
+- Vania Ranjan
 - Team Member 3
 - Team Member 4
