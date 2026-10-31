@@ -192,7 +192,51 @@ class login():
     print('terminal')
 
 class inventory():
-    print()
+    def __init__(self):
+        self.medications = {
+            1: {"name": "Acetaminophen", "quantity":30},
+            2: {"name": "Aspirin", "quantity":30},
+            3: {"name": "Ibuprofen", "quantity":40},
+            4: {"name": "Cefazolin", "quantity":20},
+            5: {"name": "Alprazolam", "quantity":28},
+            6: {"name": "Albuterol", "quantity":33},
+            7: {"name": "Bisacodyl", "quantity":15},
+            8: {"name": "Famotidine", "quantity":24},
+            9: {"name": "Zolpidem", "quantity":35},
+            10: {"name": "Diphenhydramine", "quantity":40},
+            11: {"name": "Methocarbamol", "quantity":39},
+            12: {"name": "Ondansetron", "quantity":45},
+            13: {"name": "Gabapentin", "quantity":23},
+            14: {"name": "Fentanyl", "quantity":36},
+            15: {"name": "Oxycodone", "quantity":19},
+            16: {"name": "Hydromorphone", "quantity":24},
+
+        }
+    def display_inventory(self):
+        print("ID | Medication | Quantity")
+        print("--------------------------")
+        for ID, medication in self.medications.items():
+            print(f"{ID}  |  {medication['name']} | {medication['quantity']}")
+
+    def get_medication_name(self,medication_id):
+        if medication_id in self.medications:
+            return self.medications[medication_id]["name"]
+        else:
+            return "Medication not found"
+    def get_medication_quantity(self,medication_id):
+        if medication_id in self.medications:
+            return self.medications[medication_id]["quantity"]
+        else:
+            return "Medication not found"
+        
+    def add_stock(self,ID,quantity):
+        confirm=input(f"Is this the medication you want to refill? (y/n) {self.medications[ID]['name']}: ")
+        if confirm=="y":
+            self.medications[ID]["quantity"]+=quantity
+            return True
+        else:
+            return False
+
 
 class eventlog():
     print()
@@ -207,7 +251,13 @@ class hardware():
     print()
 
 def main():
-    print
+    stock = inventory()
+    stock.display_inventory()
+    id=int(input("enter id to refill: "))
+    quant=int(input("enter quanitity: "))
+    stock.add_stock(id,quant)
+    print(f"{stock.get_medication_name(id)}")
+    print(f"{stock.get_medication_quantity(id)}")
     
 if __name__=="__main__":
     main()
