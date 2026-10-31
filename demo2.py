@@ -13,8 +13,8 @@
 # authorize(username,password)
 
 
-import tkinter as tk
-from tkinter import messagebox
+# import tkinter as tk
+# from tkinter import messagebox
 
 # Create the main window
 # root = tk.Tk()
@@ -92,86 +92,122 @@ from tkinter import messagebox
 # # Run the application
 # root.mainloop()
 
-import tkinter as tk
+# import tkinter as tk
 
-class Login:
-    def __init__(self, root, show_home):
-        self.frame = tk.Frame(root)
+# class Login:
+#     def __init__(self, root, show_home):
+#         self.frame = tk.Frame(root)
 
-        self.label = tk.Label(self.frame, text="Log in")
-        self.label.pack()
-        self.username=tk.StringVar()
-        self.password=tk.StringVar()
+#         self.label = tk.Label(self.frame, text="Log in")
+#         self.label.pack()
+#         self.username=tk.StringVar()
+#         self.password=tk.StringVar()
 
-        name_label = tk.Label(self.frame, text = 'Username', font=('calibre',10, 'bold'))
-        name_label.pack()
-        # creating a entry for input
-        # name using widget Entry
-        name_entry = tk.Entry(self.frame,textvariable = self.username, font=('calibre',10,'normal'))
-        name_entry.pack()
-        # creating a label for password
-        passw_label = tk.Label(self.frame, text = 'Password', font = ('calibre',10,'bold'))
-        passw_label.pack()
-        # creating a entry for password
-        passw_entry=tk.Entry(self.frame, textvariable = self.password, font = ('calibre',10,'normal'), show = '*')
-        passw_entry.pack()
-        # creating a button using the widget 
-        # Button that will call the submit function 
-        self.button=tk.Button(self.frame,text = 'Submit', command = show_home) #shpw home should be the suthenticate function
+#         name_label = tk.Label(self.frame, text = 'Username', font=('calibre',10, 'bold'))
+#         name_label.pack()
+#         # creating a entry for input
+#         # name using widget Entry
+#         name_entry = tk.Entry(self.frame,textvariable = self.username, font=('calibre',10,'normal'))
+#         name_entry.pack()
+#         # creating a label for password
+#         passw_label = tk.Label(self.frame, text = 'Password', font = ('calibre',10,'bold'))
+#         passw_label.pack()
+#         # creating a entry for password
+#         passw_entry=tk.Entry(self.frame, textvariable = self.password, font = ('calibre',10,'normal'), show = '*')
+#         passw_entry.pack()
+#         # creating a button using the widget 
+#         # Button that will call the submit function 
+#         self.button=tk.Button(self.frame,text = 'Submit', command = show_home) #shpw home should be the suthenticate function
 
-        self.button.pack()
+#         self.button.pack()
  
  
-    def authenticate(self):
-        if(self.username=='student' and self.password=='123'):
-            return True
-        else:
-            return False
-    def show(self):
-        self.frame.pack()
+#     def authenticate(self):
+#         if(self.username=='student' and self.password=='123'):
+#             return True
+#         else:
+#             return False
+#     def show(self):
+#         self.frame.pack()
 
-    def hide(self):
-        self.frame.pack_forget()
-
-
-class Home:
-    def __init__(self, root, show_login):
-        self.frame = tk.Frame(root)
-
-        self.label = tk.Label(self.frame, text="Home")
-        self.label.pack()
-
-        self.button = tk.Button(
-            self.frame,
-            text="Back",
-            command=show_login
-        )
-        self.button.pack()
-
-    def show(self):
-        self.frame.pack()
-
-    def hide(self):
-        self.frame.pack_forget()
+#     def hide(self):
+#         self.frame.pack_forget()
 
 
-# Main application
-root = tk.Tk()
-root.geometry("400x300")
+# class Home:
+#     def __init__(self, root, show_login):
+#         self.frame = tk.Frame(root)
 
-def show_home():
-    login.hide()
-    home.show()
+#         self.label = tk.Label(self.frame, text="Home")
+#         self.label.pack()
 
-def show_login():
-    home.hide()
-    login.show()
+#         self.button = tk.Button(
+#             self.frame,
+#             text="Back",
+#             command=show_login
+#         )
+#         self.button.pack()
 
-login = Login(root, show_home)
+#     def show(self):
+#         self.frame.pack()
 
-home = Home(root, show_login)
+#     def hide(self):
+#         self.frame.pack_forget()
 
 
-login.show()
+# # Main application
+# root = tk.Tk()
+# root.geometry("400x300")
 
-root.mainloop()
+# def show_home():
+#     login.hide()
+#     home.show()
+
+# def show_login():
+#     home.hide()
+#     login.show()
+
+# login = Login(root, show_home)
+
+# home = Home(root, show_login)
+
+
+# login.show()
+
+# root.mainloop()
+
+class refill():
+    print
+
+class authenticate():
+    print
+
+class dispense():
+    print
+
+class maintaince():
+    print
+
+class login():
+    print('terminal')
+
+class inventory():
+    print()
+
+class eventlog():
+    print()
+
+class comms():
+    print()
+
+class fault():
+    print()
+
+class hardware():
+    print()
+
+def main():
+    print
+    
+if __name__=="__main__":
+    main()
