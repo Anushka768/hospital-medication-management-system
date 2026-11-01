@@ -311,13 +311,28 @@ class authenticate:
                     ("admin", "Owen11", "0000")
                     ]
 
-            
-    def login(self,username,password):
-        for role,user,user_pass in self.users:
-            if username==user and password==user_pass:
-                return role
+  
+    def authenticate(self):
+        attempt=0
+        while attempt<3:
+            username=input("Enter username: ")
+            password=input("Enter password: ")
+            auth_role=None
+            for role,user,user_pass in self.users:
+                    if username==user and password==user_pass:
+                            auth_role= role
+                            break
+              
+        
+            if auth_role is not None:
+                print(f"Login successful! Role: {auth_role}")
+                return auth_role
+            else:
+                    print(f"invalid log in. Attempts remaining: {2-attempt}")
+                    attempt+=1
+     
+        print("You have reached max attempts, try again in 20 minutes")
         return None
-
 
 class dispense():
     print
@@ -325,7 +340,7 @@ class dispense():
 class maintaince():
     print
 
-class login():
+class login(): #using tkinter library later on
     print('terminal')
 
 class inventory():
@@ -391,24 +406,20 @@ def main():
 
     stock = inventory()
     auth=authenticate()
-    username=input("Enter username: ")
-    password=input("Enter password: ")
+    role=auth.authenticate()
 
-    role=auth.login(username,password)
     if role is not None:
-        print(f"Login successful! Role: {role}")
-    else:
-        print("Invalid username or password")
-    while True:
-        stock.display_inventory()
-        id=int(input("enter id to refill: "))
-        quant=int(input("enter quanitity: "))
-        stock.add_stock(id,quant)
-        print(f"{stock.get_medication_name(id)}")
-        print(f"{stock.get_medication_quantity(id)}")
-        state=input(print("Would you like to exit? (y/n)"))
-        if state=="y":
-            break
+        while True:
+                stock.display_inventory()
+                id=int(input("enter id to refill: "))
+                quant=int(input("enter quanitity: "))
+                stock.add_stock(id,quant)
+                print(f"{stock.get_medication_name(id)}")
+                print(f"{stock.get_medication_quantity(id)}")
+                state=input("Would you like to exit? (y/n)")
+                if state=="y":
+                    break
+
         
     
 if __name__=="__main__":
