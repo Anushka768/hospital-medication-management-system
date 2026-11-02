@@ -1,5 +1,5 @@
 """PRESENTATION MODULE. Secret: console menu wording and layout.
-Letter menus and registration flow adapted from the partner's original funcs/new_user.
+
 No SQL, password comparisons or mutable account records are exposed here.
 """
 def funcs(role):
@@ -69,7 +69,7 @@ class Console:
         self._alarms(token)
 
     def run(self):
-        print('BASIC DEMO 2 - partner login/menu design plus alarm and link-failure simulation')
+        print('DEMO 2 ')
         print('Fictional accounts: admin / technician / pharmacist / nurse / doctor')
         print('Password for each: Demo123!  (use only fictional demonstration data)')
         print('New accounts: log in as admin, then select g. Enter quit at Username to close.')
@@ -108,7 +108,7 @@ class Console:
                         elif action == 'Sim':
                             self._simulate(token)
                         elif action == 'Planned':
-                            print('Not implemented in this basic prototype.')
+                            print('Not implemented in this prototype.')
                         else:
                             print('Please input the letter next to the desired function.')
                     except (ValueError, PermissionError, ConnectionError) as exc:
