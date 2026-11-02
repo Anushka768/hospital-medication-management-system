@@ -301,7 +301,7 @@ class refill():
 #             return(0)
 
 
-            
+import random
 
 class authenticate:
     def __init__(self):
@@ -338,7 +338,14 @@ class dispense():
     print
 
 class maintaince():
-    print
+    def __init__(self, fault_object):
+        self.fault_system=fault_object
+
+    def clear_faults(self):
+        for item in self.fault_system.faults:
+            if item['status']=='Active':
+                item['status']=='Resolved'
+        print("All active faults marked as resolved")
 
 class login(): #using tkinter library later on
     print('terminal')
@@ -396,7 +403,28 @@ class eventlog():
 class comms():
     print()
 
+from datetime import datetime
+
 class fault():
+    def __init__(self):
+        self.faults=[]
+    def add_fault(self,description):
+        new_fault={
+            "id" : len(self.faults)+1,
+            "description" : description,
+            "time" : datetime.now().isoformat(timespec="seconds"),
+            "status" : "Active"
+        }
+        self.faults.append(new_fault)
+        print("Fault detected and logged")
+    def display_faults(self):
+        for item in self.faults:
+            print(
+                f"{item['id']} | {item['description']} | "
+                f"{item['status']} | {item['time']}"
+            )
+
+        
     print()
 
 class hardware():
@@ -407,17 +435,43 @@ def main():
     stock = inventory()
     auth=authenticate()
     role=auth.authenticate()
-
+    faults=fault()
+    maintaince_system=maintaince(faults)
     if role is not None:
         while True:
-                stock.display_inventory()
-                id=int(input("enter id to refill: "))
-                quant=int(input("enter quanitity: "))
-                stock.add_stock(id,quant)
-                print(f"{stock.get_medication_name(id)}")
-                print(f"{stock.get_medication_quantity(id)}")
-                state=input("Would you like to exit? (y/n)")
-                if state=="y":
+                print("\n1. Display Inventory")
+                print("2. Refill Medication")
+                print("3. Dispense Medication")
+                print("4. View Faults")
+                print("5. Perform Maintenance")
+                print("6. Exit")
+                choice = int(input("Select an option: "))
+                if choice==1:
+                    stock.display_inventory()
+                elif choice==2:
+
+                    id=int(input("enter id to refill: "))
+                    quant=int(input("enter quanitity: "))
+                    success=stock.add_stock(id,quant)
+                    print(f"{stock.get_medication_name(id)}")
+                    print(f"{stock.get_medication_quantity(id)}")
+                    if success:
+                        number = random.randint(1,10)
+                        if number==5:
+                            faults.add_fault("Drawer malfunction")
+                #choice equals 3
+                elif choice==4:
+                    if role == 'technician' or role =='admin':
+                        faults.display_faults()
+                    else:
+                        print("You are not authorized to view the faults")
+                elif choice==5:
+                    if role == 'technician':
+                        maintaince_system.clear_faults()
+                    else:
+                        print("You are not autherized to perform maintainence")
+                        
+                elif choice==6:
                     break
 
         
