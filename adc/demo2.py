@@ -344,7 +344,7 @@ class maintaince():
     def clear_faults(self):
         for item in self.fault_system.faults:
             if item['status']=='Active':
-                item['status']=='Resolved'
+                item['status']='Resolved'
         print("All active faults marked as resolved")
 
 class login(): #using tkinter library later on
@@ -457,6 +457,7 @@ def main():
                     print(f"{stock.get_medication_quantity(id)}")
                     if success:
                         number = random.randint(1,10)
+                        print(f"number generated: {number}")
                         if number==5:
                             faults.add_fault("Drawer malfunction")
                 #choice equals 3
