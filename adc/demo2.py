@@ -314,7 +314,8 @@ class authenticate:
                     ("technician", "anushka12", "1010"),
                     ("admin", "owen11", "0000")
                     ]
-
+        self.event_log = eventlog_object
+        self.current_username = None
   
     def authenticate(self):
         attempt=0
@@ -329,11 +330,23 @@ class authenticate:
               
         
             if auth_role is not None:
-                print(f"Login successful! Role: {auth_role}")
+                self.current_username = username
+                print(f"\nLogin successful! Role: {auth_role}")
+                self.event_log.add_event(
+                    "LOGIN",
+                    username, 
+                    details = f"{auth_role} logged into the ADC."
+                )
                 return auth_role
             else:
                     attempt +=1
-                    print(f"invalid log in. Attempts remaining: {3-attempt}")
+                    print(f"Invalid log in. Attempts remaining: {3-attempt}")
+
+                    self.event_log.add_event(
+                        "LOGIN FAILED",
+                        username, 
+                        details = "Invalid username or password."
+                    )
                 
      
         print("You have reached max attempts, try again in 20 minutes")
@@ -475,13 +488,18 @@ class eventlog():
 
         self.__connection.commit()
 
-    def display_log(self):
+    def display_log(self, limit=10):
         cursor = self.__connection.execute("""
-        SELECT * FROM events ORDER BY event_id DESC """)
+        SELECT * 
+        FROM events 
+        ORDER BY event_id DESC 
+        LIMIT ?
+        """, (limit,))
+
 
         events = cursor.fetchall()
 
-        print("\nEvent History")
+        print("\nLast 10 Event Entries")
         print("-"*75)
 
         if not events:
@@ -508,6 +526,9 @@ class eventlog():
         self.__connection.close()
 
 
+
+
+
 class refill():
     def __init__(self, inventory_object, eventlog_object):
         self.inventory = inventory_object
@@ -518,9 +539,11 @@ class refill():
         if medication_id not in self.inventory.medications:
             print("Invalid medication ID. ")
             return False
+        
         if quantity <=0:
             print("Quantity must be greater than zero. ")
             return False
+        
         medication_name = self.inventory.get_medication_name(
             medication_id
         )
@@ -551,16 +574,26 @@ class refill():
         )
 
         return True
+
+
+    
     
 class dispense():
-    def __init__(self, inventory_object, eventlog_object):
+    def __init__(self, inventory_object, eventlog_object, maintenance_object):
         self.inventory = inventory_object
         self.event_log = eventlog_object
+        self.maintenance = maintenance_object
 
     def dispense_medication (self, medication_id, quantity, username):
+        if self.maintenance.is_active:
+            print("Dispensing unavailable. ADC is in maintenance mode.")
+            return False
+        
+        
         if medication_id not in self.inventory.medications:
             print("Invalid medication ID.")
             return False
+        
         if quantity <=0:
             print("Quantity must be greater than 0.")
             return False
