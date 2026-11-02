@@ -1,314 +1,9 @@
-# print("hello world")
-
-
-# def authorize(username, password):
-#     if username=="student" and password=="123":
-#         print("welcome")
-#     else:
-#         print("wrong username or password")
-
-# username=input("enter username: ")
-# password=input("enter password: ")
-
-# authorize(username,password)
-
-
-# import tkinter as tk
-# from tkinter import messagebox
-
-# Create the main window
-# root = tk.Tk()
-# root.title("Login Application")
-# root.geometry("400x300")
-
-# # Function to clear the current screen
-# def clear_screen():
-#     for widget in root.winfo_children():
-#         widget.destroy()
-
-# # Function to display the second screen
-# def home_screen(username):
-#     clear_screen()
-
-#     tk.Label(
-#         root,
-#         text=f"Welcome, {username}!",
-#         font=("Arial", 20)
-#     ).pack(pady=40)
-
-#     tk.Label(
-#         root,
-#         text="You have successfully logged in!"
-#     ).pack(pady=10)
-
-#     tk.Button(
-#         root,
-#         text="Logout",
-#         command=login_screen
-#     ).pack(pady=20)
-
-# # Function to check login credentials
-# def login():
-#     username = username_entry.get()
-#     password = password_entry.get()
-
-#     if username == "admin" and password == "1234":
-#         home_screen(username)
-#     else:
-#         messagebox.showerror(
-#             "Login Failed",
-#             "Incorrect username or password"
-#         )
-
-# # Function to display the login screen
-# def login_screen():
-#     global username_entry, password_entry
-
-#     clear_screen()
-
-#     tk.Label(
-#         root,
-#         text="Login",
-#         font=("Arial", 24)
-#     ).pack(pady=20)
-
-#     tk.Label(root, text="Username").pack()
-#     username_entry = tk.Entry(root)
-#     username_entry.pack(pady=5)
-
-#     tk.Label(root, text="Password").pack()
-#     password_entry = tk.Entry(root, show="*")
-#     password_entry.pack(pady=5)
-
-#     tk.Button(
-#         root,
-#         text="Login",
-#         command=login
-#     ).pack(pady=20)
-
-# # Start on the login screen
-# login_screen()
-
-# # Run the application
-# root.mainloop()
-
-# import tkinter as tk
-
-# class Login:
-#     def __init__(self, root, show_home):
-#         self.frame = tk.Frame(root)
-
-#         self.label = tk.Label(self.frame, text="Log in")
-#         self.label.pack()
-#         self.username=tk.StringVar()
-#         self.password=tk.StringVar()
-
-#         name_label = tk.Label(self.frame, text = 'Username', font=('calibre',10, 'bold'))
-#         name_label.pack()
-#         # creating a entry for input
-#         # name using widget Entry
-#         name_entry = tk.Entry(self.frame,textvariable = self.username, font=('calibre',10,'normal'))
-#         name_entry.pack()
-#         # creating a label for password
-#         passw_label = tk.Label(self.frame, text = 'Password', font = ('calibre',10,'bold'))
-#         passw_label.pack()
-#         # creating a entry for password
-#         passw_entry=tk.Entry(self.frame, textvariable = self.password, font = ('calibre',10,'normal'), show = '*')
-#         passw_entry.pack()
-#         # creating a button using the widget 
-#         # Button that will call the submit function 
-#         self.button=tk.Button(self.frame,text = 'Submit', command = show_home) #shpw home should be the suthenticate function
-
-#         self.button.pack()
- 
- 
-#     def authenticate(self):
-#         if(self.username=='student' and self.password=='123'):
-#             return True
-#         else:
-#             return False
-#     def show(self):
-#         self.frame.pack()
-
-#     def hide(self):
-#         self.frame.pack_forget()
-
-
-# class Home:
-#     def __init__(self, root, show_login):
-#         self.frame = tk.Frame(root)
-
-#         self.label = tk.Label(self.frame, text="Home")
-#         self.label.pack()
-
-#         self.button = tk.Button(
-#             self.frame,
-#             text="Back",
-#             command=show_login
-#         )
-#         self.button.pack()
-
-#     def show(self):
-#         self.frame.pack()
-
-#     def hide(self):
-#         self.frame.pack_forget()
-
-
-# # Main application
-# root = tk.Tk()
-# root.geometry("400x300")
-
-# def show_home():
-#     login.hide()
-#     home.show()
-
-# def show_login():
-#     home.hide()
-#     login.show()
-
-# login = Login(root, show_home)
-
-# home = Home(root, show_login)
-
-
-# login.show()
-
-# root.mainloop()
-
-
-
-
-
-# class User:
-
-#     def __init__(self, name, password, role):
-#         self.name=name
-#         self.password=password
-#         self.role=role
-        
-
-#     def auth_user(u):
-#         n=0
-#         check=False
-#         while n<len(users) and check==False:
-#             if users[n].name!=u:
-#                 n+=1
-#             else:
-#                 check=True
-#         return(check)
-
-#     def auth_pass(u,p):
-#         i=0
-#         check=False
-#         while i<len(users) and i!=-1:
-#             if u==users[i].name:
-#                 u_p=users[i].password
-#                 i=-1
-#             else:
-#                 i+=1
-#         if i==len(users):
-#             print("Username doesn't exist")
-#         else:
-#             if u_p==p:
-#                 check=True
-#         return(check)
-
-#     def auth_role(u):
-#         i=0
-#         check=False
-#         while i<len(users) and i!=-1:
-#             if u==users[i].name:
-#                 u_r=users[i].role
-#                 i=-1
-#             else:
-#                 i+=1
-#         if i==len(users):
-#             print("User doesn't exist")
-#         else:
-#             return(u_r)
-
-        
-
-#     def funcs(role):
-#         choice=""
-#         i=""
-#         if role == "d" or role == "n":
-#             choice=input ("Choose a function.\na) View ADC info\nb) Exit\n")
-#             if choice=="a" or choice=="A":
-#                 i="ADC"
-#             elif choice=="b" or choice=="B":
-#                 i="Exit"
-#             else:
-#                 i="None"
-#         if role == "t":
-#             choice=input ("Choose a function.\na) View ADC info\nb) Alarms\nc) Exit\n")
-#             if choice=="a" or choice=="A":
-#                 i="ADC"
-#             elif choice=="b" or choice=="B":
-#                 i="Alarms"
-#             elif choice=="c" or choice=="C":
-#                 i="Exit"
-#             else:
-#                 i="None"
-#         if role == "p":
-#             choice=input ("Choose a function.\na) View ADC info\nb) Hospital Inventory\nc) Exit\n")
-#             if choice=="a" or choice=="A":
-#                 i="ADC"
-#             elif choice=="b" or choice=="B":
-#                 i="Inv"
-#             elif choice=="c" or choice=="C":
-#                 i="Exit"
-#             else:
-#                 i="None"
-#         if role == "a":
-#             choice=input ("Choose a function.\na) View ADC info\nb) Alarms\nc) History\nd) Generate\ne) Hospital Inventory\nf) Exit\n")
-#             if choice=="a" or choice=="A":
-#                 i="ADC"
-#             elif choice=="b" or choice=="B":
-#                 i="Alarms"
-#             elif choice=="c" or choice=="C":
-#                 i="History"
-#             elif choice=="d" or choice=="D":
-#                 i="Report"
-#             elif choice=="e" or choice=="E":
-#                 i="Inv"
-#             elif choice=="f" or choice=="F":
-#                 i="Exit"
-#             else:
-#                 i="None"
-
-#         if i=="ADC":
-#             print ("Viewing ADC\n")
-#             return(0)
-#         if i=="Alarms":
-#             print ("Viewing alarms\n")
-#             return(0)
-#         if i=="History":
-#             print("Viewing history\n")
-#             return(0)
-#         if i=="Report":
-#             print("Viewing report\n")
-#             return(0)
-#         if i=="Inv":
-#             print("Viewing inventory\n")
-#             return(0)
-#         if i=="Exit":
-#             print("Exiting\n")
-#             return(1)
-#         if i=="" or i=="None":
-#             print("Please input the letter next to the desired function")
-#             return(0)
-
-
-
-
 import random
 import sqlite3
 from datetime import datetime
 
 class authenticate:
-    def __init__(self):
+    def __init__(self, eventlog_object):
         self.users=[("nurse", "vania23", "1234"), 
                     ("pharmacist", "karman45", "5678"),
                     ("technician", "anushka12", "1010"),
@@ -321,12 +16,12 @@ class authenticate:
         attempt=0
         while attempt<3:
             username=input("Enter username: ").lower()
-            password=input("Enter password: ").lower()
+            password=input("Enter password: ")
             auth_role=None
             for role,user,user_pass in self.users:
-                    if username==user and password==user_pass:
-                            auth_role= role
-                            break
+                if username==user and password==user_pass:
+                    auth_role= role
+                    break
               
         
             if auth_role is not None:
@@ -354,17 +49,67 @@ class authenticate:
 
 
 class maintaince():
-    def __init__(self, fault_object):
+    def __init__(self, fault_object, eventlog_object):
         self.fault_system=fault_object
+        self.event_log = eventlog_object
+        self.__active = False
 
-    def clear_faults(self):
+    @property
+    def is_active (self):
+        return self.__active
+
+    def start_maintenance (self, username):
+        if self.__active:
+            print ("Maintenance is already active.")
+            return
+        self.__active = True
+
+        print("Maintenance mode enabled.")
+
+        self.event_log.add_event(
+            "MAINTENANCE START", 
+            username, 
+            details = "ADC entered maintenance mode."
+        )
+
+    def end_maintenance(self, username):
+        if not self.__active:
+            print("Maintenance is not currently active")
+            return
+        self.__active = False
+
+        print("Maintenance more disabled")
+
+        self.event_log.add_event(
+            "MAINTENANCE END", 
+            username,
+            details = "ADC exited maintenance mode."
+        )
+
+
+
+    def clear_faults(self, username):
+        if not self.__active:
+            print("Maintenance mode must be active.")
+            return
+        
+        active_faults =0
+
         for item in self.fault_system.faults:
             if item['status']=='Active':
                 item['status']='Resolved'
+                active_faults +=1
         print("All active faults marked as resolved")
 
+        self.event_log.add_event(
+            "FAULT RESOLUTION", 
+            username,
+            details=f"{active_faults} active faults resolved."
+        )
+
+
 class login(): #using tkinter library later on
-    print('terminal')
+    pass
 
 class inventory():
     def __init__(self):
@@ -549,7 +294,7 @@ class refill():
         )
 
         confirm = input(
-            f"Confirm refill or {medication_name}? (y/n):"
+            f"Confirm refill of {medication_name}? (y/n): "
         ).lower()
 
         if confirm !="y":
@@ -635,10 +380,10 @@ class dispense():
         return True
 
 
-
+# go over this stuff still
 
 class comms():
-    print()
+    pass
 
 from datetime import datetime
 
@@ -648,9 +393,11 @@ from datetime import datetime
 
 
 class fault():
-    def __init__(self):
+    def __init__(self, eventlog_object):
         self.faults=[]
-    def add_fault(self,description):
+        self.event_log = eventlog_object
+
+    def add_fault(self,description, username = "system"):
         new_fault={
             "id" : len(self.faults)+1,
             "description" : description,
@@ -659,7 +406,20 @@ class fault():
         }
         self.faults.append(new_fault)
         print("Fault detected and logged")
+
+        self.event_log.add_event(
+            "FAULT", 
+            username, 
+            details = description
+        )
+
     def display_faults(self):
+        print("\nFAULT HISTORY")
+        print("-" * 75)
+        if not self.faults:
+            print("No faults recorded.")
+            return
+        
         for item in self.faults:
             print(
                 f"{item['id']} | {item['description']} | "
@@ -670,54 +430,159 @@ class fault():
     print()
 
 class hardware():
-    print()
+    pass
+
+def get_integer_input(prompt):
+    try:
+        return int(input(prompt))
+    except ValueError:
+        print("Please enter a valid whole number.")
+        return None
 
 def main():
 
+    event_history = eventlog() 
+
     stock = inventory()
-    auth=authenticate()
-    role=auth.authenticate()
-    faults=fault()
-    maintaince_system=maintaince(faults)
-    if role is not None:
+    auth=authenticate(event_history)
+ 
+    faults=fault(event_history)
+
+    maintaince_system=maintaince(faults, event_history)
+
+    refill_system = refill(
+        stock,
+        event_history
+    )
+
+    dispense_system = dispense(
+        stock, 
+        event_history,
+        maintaince_system
+    )
+
+    try:
         while True:
+            print("\n------------ADC LOGIN-------------- ")
+            role = auth.authenticate()
+
+            if role is None:
+                print("\nReturing to login screen...")
+                continue
+
+            username = auth.current_username
+
+
+            while True:
+                print(f"\n ---------{role.upper()} MENU -----------")
                 print("\n1. Display Inventory")
                 print("2. Refill Medication")
                 print("3. Dispense Medication")
                 print("4. View Faults")
-                print("5. Perform Maintenance")
-                print("6. Exit")
-                choice = int(input("Select an option: "))
+                print("5. Start Maintenance")
+                print("6. Resolve Faults")
+                print("7. End Maintenance")
+                print("8. View Last 10 Event Entries")
+                print("9. Exit")
+
+                choice = get_integer_input("Select an option: ")
+
+                if choice is None:
+                    continue
                 if choice==1:
                     stock.display_inventory()
+                
                 elif choice==2:
+                    if role == "pharmacist" or role == "admin":
+                        stock.display_inventory()
+                        medication_id = get_integer_input(
+                            "Enter ID to refill:"
+                        )
 
-                    id=int(input("enter id to refill: "))
-                    quant=int(input("enter quanitity: "))
-                    success=stock.add_stock(id,quant)
-                    print(f"{stock.get_medication_name(id)}")
-                    print(f"{stock.get_medication_quantity(id)}")
-                    if success:
-                        number = random.randint(1,10)
-                        print(f"number generated: {number}")
-                        if number==5:
-                            faults.add_fault("Drawer malfunction")
-                #choice equals 3
-                elif choice==4:
-                    if role == 'technician' or role =='admin':
+                        quantity = get_integer_input("" \
+                        "Enter quantity: ")
+
+                        if medication_id is None or quantity is None:
+                            continue
+
+                        success = refill_system.refill_medication(
+                            medication_id,
+                            quantity, 
+                            username
+                        )
+
+                        if success:
+                            number = random.randint(1,10)
+
+                            if number ==5:
+                                faults.add_fault("Drawer malufunction", username)
+                    else:
+                        print("You are not authorized to refill medication.")
+                elif choice ==3:
+                    if role == "nurse" or role =="admin":
+                        stock.display_inventory()
+
+                        medication_id = get_integer_input(
+                            "Enter ID to dispense: "
+                        )
+
+                        quantity = get_integer_input(
+                            "Enter quantity:"
+                        )
+
+                        if medication_id is None or quantity is None:
+                            continue
+
+                        dispense_system.dispense_medication(
+                            medication_id= medication_id,
+                            quantity=quantity, 
+                            username=username
+                        )
+                    else:
+                        print("Your are not authorized to dispense medication.")
+                elif choice ==4:
+                    if role == "technician" or role=="admin":
                         faults.display_faults()
                     else:
-                        print("You are not authorized to view the faults")
-                elif choice==5:
-                    if role == 'technician':
-                        maintaince_system.clear_faults()
+                        print("Your are not authorized to view faults.")
+                elif choice ==5:
+                    if role == "technician":
+                        maintaince_system.start_maintenance(username)
                     else:
-                        print("You are not autherized to perform maintainence")
-                        
-                elif choice==6:
+                        print("You are not authorized to perform maintenance")
+
+                elif choice ==6:
+                    if role == "technician":
+                        maintaince_system.clear_faults(username)
+                    else:
+                        print("Your are not authroized to resolve faults. ")
+                elif choice ==7:
+                    if role == "technician":
+                        maintaince_system.end_maintenance(username)
+                    else:
+                        print("You are not authorized to end maintenance.")
+                elif choice ==8:
+                    if role =="admin":
+                        event_history.display_log(10)
+                    else:
+                        print("You are not authorized to view the event log.")
+                elif choice ==9:
+                    print(f"\n{username} has logged out.")
+
+                    event_history.add_event(
+                        "LOGOUT", 
+                        username, 
+                        details=f"{role} logged out of the ADC."
+                    )
+
                     break
 
-        
-    
-if __name__=="__main__":
-    main()
+                else:
+                    print("Invalid option. PLease enter a number from 1 to 9.")
+    finally:
+                    event_history.close()
+
+if __name__ == "__main__":
+                    main()
+                    
+                
