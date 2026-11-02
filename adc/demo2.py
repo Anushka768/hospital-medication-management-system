@@ -390,10 +390,14 @@ class inventory():
         
     def add_stock(self,ID,quantity):
         confirm=input(f"Is this the medication you want to refill? (y/n) {self.medications[ID]['name']}: ")
-        if confirm=="y":
+        # if quantity <0:
+        #     print("invalid quantity")
+        #     return False
+        if confirm=="y" and quantity>0:
             self.medications[ID]["quantity"]+=quantity
             return True
         else:
+            print("Failed refill attempt")
             return False
 
 
@@ -449,17 +453,20 @@ def main():
                 if choice==1:
                     stock.display_inventory()
                 elif choice==2:
+                    if role=='pharmacist': 
 
-                    id=int(input("enter id to refill: "))
-                    quant=int(input("enter quanitity: "))
-                    success=stock.add_stock(id,quant)
-                    print(f"{stock.get_medication_name(id)}")
-                    print(f"{stock.get_medication_quantity(id)}")
-                    if success:
-                        number = random.randint(1,10)
-                        print(f"number generated: {number}")
-                        if number==5:
-                            faults.add_fault("Drawer malfunction")
+                        id=int(input("enter id to refill: "))
+                        quant=int(input("enter quanitity: "))
+                        success=stock.add_stock(id,quant)
+                        print(f"{stock.get_medication_name(id)}")
+                        print(f"{stock.get_medication_quantity(id)}")
+                        if success:
+                            number = random.randint(1,10)
+                            print(f"number generated: {number}")
+                            if number==5:
+                                faults.add_fault("Drawer malfunction")
+                    else:
+                        print("You are not authorized to refill medication")
                 #choice equals 3
                 elif choice==4:
                     if role == 'technician' or role =='admin':
