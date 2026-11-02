@@ -176,8 +176,8 @@
 
 # root.mainloop()
 
-class refill():
-    print
+
+
 
 
 # class User:
@@ -301,22 +301,26 @@ class refill():
 #             return(0)
 
 
+
+
 import random
+import sqlite3
+from datetime import datetime
 
 class authenticate:
     def __init__(self):
-        self.users=[("nurse", "Vania23", "1234"), 
-                    ("pharmacist", "Karman45", "5678"),
-                    ("technician", "Anushka12", "1010"),
-                    ("admin", "Owen11", "0000")
+        self.users=[("nurse", "vania23", "1234"), 
+                    ("pharmacist", "karman45", "5678"),
+                    ("technician", "anushka12", "1010"),
+                    ("admin", "owen11", "0000")
                     ]
 
   
     def authenticate(self):
         attempt=0
         while attempt<3:
-            username=input("Enter username: ")
-            password=input("Enter password: ")
+            username=input("Enter username: ").lower()
+            password=input("Enter password: ").lower()
             auth_role=None
             for role,user,user_pass in self.users:
                     if username==user and password==user_pass:
@@ -328,14 +332,13 @@ class authenticate:
                 print(f"Login successful! Role: {auth_role}")
                 return auth_role
             else:
-                    print(f"invalid log in. Attempts remaining: {2-attempt}")
-                    attempt+=1
+                    attempt +=1
+                    print(f"invalid log in. Attempts remaining: {3-attempt}")
+                
      
         print("You have reached max attempts, try again in 20 minutes")
         return None
 
-class dispense():
-    print
 
 class maintaince():
     def __init__(self, fault_object):
@@ -372,7 +375,7 @@ class inventory():
 
         }
     def display_inventory(self):
-        print("ID | Medication | Quantity")
+        print("\nID | Medication | Quantity")
         print("--------------------------")
         for ID, medication in self.medications.items():
             print(f"{ID}  |  {medication['name']} | {medication['quantity']}")
@@ -387,23 +390,229 @@ class inventory():
             return self.medications[medication_id]["quantity"]
         else:
             return "Medication not found"
-        
-    def add_stock(self,ID,quantity):
-        confirm=input(f"Is this the medication you want to refill? (y/n) {self.medications[ID]['name']}: ")
-        if confirm=="y":
-            self.medications[ID]["quantity"]+=quantity
-            return True
-        else:
+
+    # used by the refill class
+    def add_stock(self,medication_id,quantity):
+        if medication_id not in self.medications or quantity<=0:
             return False
+        else:
+            self.medications[medication_id]["quantity"] += quantity
+            return True
+    
+    #used by the dispense class
+    def remove_stock(self, medication_id, quantity):
+        if medication_id not in self.medications or quantity <=0:
+            return False
+        if self.medications[medication_id]["quantity"] < quantity:
+            return False
+        else:
+            self.medications[medication_id]["quantity"]-=quantity
+            return True
 
 
 class eventlog():
-    print()
+    def __init__(self, database_name = "adc_events.db"):
+        self.__database_name = database_name
+        self.__connection = sqlite3.connect(self.__database_name)
+
+        self.__connection.execute("""
+        CREATE TABLE IF NOT EXISTS events(
+        event_id INTEGER PRIMARY KEY AUTOINCREMENT,
+        event_type TEXT,
+        username TEXT, 
+        medication_id INTEGER,
+        medication_name TEXT, 
+        quantity INTEGER, 
+        details TEXT, 
+        timestamp TEXT
+        )
+        """)
+
+        columns = {
+            row[1]
+            for row in self.__connection.execute(
+                "PRAGMA table_info(events)"
+            )
+        }
+
+        if "medication_name" not in columns:
+            self.__connection.execute(
+                "ALTER TABLE events ADD COLUMN medication_name TEXT"
+            )
+        self.__connection.commit()
+
+    def add_event(
+            self,
+            event_type, 
+            username,
+            medication_id = None, 
+            medication_name = None, 
+            quantity = None, 
+            details = ""
+    ):
+        timestamp = datetime.now().isoformat(timespec="seconds")
+
+        self.__connection.execute("""
+        INSERT INTO events(
+        event_type, 
+        username, 
+        medication_id, 
+        medication_name,
+        quantity, 
+        details, 
+        timestamp
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+        """, (
+            event_type,
+            username, 
+            medication_id,
+            medication_name,
+            quantity,
+            details,
+            timestamp
+        ))
+
+        self.__connection.commit()
+
+    def display_log(self):
+        cursor = self.__connection.execute("""
+        SELECT * FROM events ORDER BY event_id DESC """)
+
+        events = cursor.fetchall()
+
+        print("\nEvent History")
+        print("-"*75)
+
+        if not events:
+            print ("No events recorded.")
+            return
+
+        for event in events:
+            print(
+                f"Event ID: {event[0]} |"
+                f"Type: {event[1]} |"
+                f"User: {event[2]}"
+            )
+
+            print(
+                f"Medication: {event[4] or 'N/A'} |"
+                f"Quantity: {event[5] if event[5] is not None else 'N/A'}"
+            )
+
+            print(f"Details: {event[6]}")
+            print(f"Time: {event[7]}")
+            print("-"*75)
+
+    def close(self):
+        self.__connection.close()
+
+
+class refill():
+    def __init__(self, inventory_object, eventlog_object):
+        self.inventory = inventory_object
+        self.event_log = eventlog_object
+
+    def refill_medication (self, medication_id, quantity, username):
+
+        if medication_id not in self.inventory.medications:
+            print("Invalid medication ID. ")
+            return False
+        if quantity <=0:
+            print("Quantity must be greater than zero. ")
+            return False
+        medication_name = self.inventory.get_medication_name(
+            medication_id
+        )
+
+        confirm = input(
+            f"Confirm refill or {medication_name}? (y/n):"
+        ).lower()
+
+        if confirm !="y":
+            print ("Refill cancelled.")
+            return False
+
+        self.inventory.add_stock(medication_id, quantity)
+
+        self.event_log.add_event(
+            "REFILL", 
+            username,
+            medication_id, 
+            medication_name, 
+            quantity,
+            "Medication inventory replenished."
+        )
+
+        print("\n Refill successfull!")
+        print(
+            f"Updated quantity:"
+            f"{self.inventory.get_medication_quantity(medication_id)}"
+        )
+
+        return True
+    
+class dispense():
+    def __init__(self, inventory_object, eventlog_object):
+        self.inventory = inventory_object
+        self.event_log = eventlog_object
+
+    def dispense_medication (self, medication_id, quantity, username):
+        if medication_id not in self.inventory.medications:
+            print("Invalid medication ID.")
+            return False
+        if quantity <=0:
+            print("Quantity must be greater than 0.")
+            return False
+
+        medication_name = self.inventory.get_medication_name(
+            medication_id
+        )
+
+        available = self.inventory.get_medication_quantity(
+            medication_id
+        )
+
+        if available < quantity:
+            print(f"Low stock. Available quantity: {available}")
+            return False
+
+        confirm = input(
+            f"Confirm dispensing {quantity} units of " f"{medication_name}? (y/n)"
+        ).lower()
+
+        if confirm !="y":
+            print("Dispensing cancelled.")
+            return False
+
+        self.inventory.remove_stock(medication_id, quantity)
+
+        self.event_log.add_event(
+            "DISPENSE", 
+            username, 
+            medication_id, 
+            medication_name,
+            quantity, 
+            "Medication successfully dispensed. "
+        )
+
+        print ("\nDispensing successful!")
+        print(f"Remaining quantity: " f"{self.inventory.get_medication_quantity(medication_id)}")
+
+        return True
+
+
+
 
 class comms():
     print()
 
 from datetime import datetime
+
+
+
+
+
 
 class fault():
     def __init__(self):
