@@ -69,7 +69,7 @@ class Console:
         self._alarms(token)
 
     def run(self):
-        print('DEMO 2 ')
+        print('Hospital Monitoring System | Deliverable 2')
         print('Fictional accounts: admin / technician / pharmacist / nurse / doctor')
         print('Password for each: Demo123!  (use only fictional demonstration data)')
         print('New accounts: log in as admin, then select g. Enter quit at Username to close.')

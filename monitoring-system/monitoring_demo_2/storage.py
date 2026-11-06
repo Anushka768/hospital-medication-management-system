@@ -44,10 +44,6 @@ class Storage:
             raise ValueError('Unknown ADC')
 
     def add_alarm(self, adc, kind, severity):
-        # One unresolved alarm for each cabinet/condition; repeat messages do not duplicate it.
-        row = self._db.execute("SELECT id FROM alarms WHERE adc=? AND kind=? AND state!='RESOLVED'", (adc, kind)).fetchone()
-        if row:
-            return row['id']
         with self._db:
             cursor = self._db.execute('INSERT INTO alarms(adc,kind,severity,raised_at,state) VALUES (?,?,?,?,?)',
                                       (adc, kind, severity, datetime.now().astimezone().isoformat(timespec='seconds'), 'ACTIVE'))
@@ -56,14 +52,16 @@ class Storage:
     def alarms(self):
         return tuple(dict(row) for row in self._db.execute('SELECT * FROM alarms ORDER BY id'))
 
-    def acknowledge(self, alarm_id, username):
+    def update_alarm_state(self, alarm_id, expected_states, state, username=None):
+        """Save a transition only if the stored state still matches."""
+        placeholders = ', '.join('?' for _ in expected_states)
         with self._db:
-            changed = self._db.execute("UPDATE alarms SET state='ACKNOWLEDGED',acknowledged_by=? WHERE id=? AND state='ACTIVE'", (username, alarm_id)).rowcount
-        return bool(changed)
-
-    def resolve_communication(self, adc):
-        with self._db:
-            self._db.execute("UPDATE alarms SET state='RESOLVED' WHERE adc=? AND kind='communication' AND state!='RESOLVED'", (adc,))
+            cursor = self._db.execute(
+                "UPDATE alarms SET state=?, acknowledged_by=COALESCE(?, acknowledged_by) "
+                f"WHERE id=? AND state IN ({placeholders})",
+                (state, username, alarm_id, *expected_states),
+            )
+        return cursor.rowcount == 1
 
     def record_event(self, description):
         with self._db:

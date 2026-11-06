@@ -1,7 +1,16 @@
-"""COMMUNICATION MODULE. Secret: JSON message format and simulated link state.
-Only this module knows the wire encoding. No real network transport is included.
-"""
+"""Encode simulated ADC messages and decode them into application events."""
+from dataclasses import dataclass
 import json
+from typing import Optional
+
+
+@dataclass(frozen=True)
+class ADCEvent:
+    adc: str
+    kind: str
+    alarm_type: Optional[str] = None
+    severity: Optional[str] = None
+
 
 class Communication:
     def __init__(self, adc_ids):
@@ -17,7 +26,8 @@ class Communication:
             if message['kind'] == 'alarm':
                 if message.get('alarm_type') != 'security' or message.get('severity') != 'CRITICAL':
                     raise ValueError('Invalid demo alarm')
-            return dict(message)
+            return ADCEvent(message['adc'], message['kind'],
+                            message.get('alarm_type'), message.get('severity'))
         except (KeyError, TypeError, json.JSONDecodeError) as exc:
             raise ValueError('Malformed ADC message') from exc
 

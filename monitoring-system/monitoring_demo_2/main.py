@@ -2,6 +2,7 @@
 import argparse
 from pathlib import Path
 from storage import Storage
+from alarms import AlarmManager
 from security import Accounts
 from communication import Communication
 from monitoring import Monitoring
@@ -15,7 +16,7 @@ def main():
     try:
         accounts = Accounts(storage)
         communication = Communication(c['adc'] for c in storage.cabinets())
-        monitoring = Monitoring(storage, accounts, communication)
+        monitoring = Monitoring(storage, accounts, communication, AlarmManager(storage))
         Console(accounts, monitoring).run()
     finally:
         storage.close()
