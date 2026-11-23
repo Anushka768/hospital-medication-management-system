@@ -31,10 +31,8 @@ documented in this repository.
 ## Repository Structure
 
 - `adc/` — Part A: ADC
-- `monitoring-system/` — Part B: Monitoring System
+- `monitoring-system/` — Part B: Monitoring System and documentation
 - `integration/` — ADC ↔ Monitoring interface
-- `docs/` — Shared project documentation
-- `DECISIONS.md` — Important project decisions and rationale
 
 ## Team
 
